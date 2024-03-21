@@ -9,7 +9,7 @@ Start project: 01.03.2024
 
 # CookFoodAI Backend service
 
-[URL] [http://localhost:5000/api/]()
+[URL] [http://localhost:5000/]()
 
 - [Java 17+]
 - [Maven 3+]
@@ -32,8 +32,8 @@ A sample configuration for an `application.properties` file to run this program 
 # OpenAI key
 openai.api.key=your open_AI key
 
-# Security JWT Token key  # Encode to Base64  (HS256  RFC 7518)
-application.security.jwt.secret-key=your security key with encode to Base64 
+# Security JWT Token key  # Encode to Base64  (HS256)
+security.jwt.secret.key=your security key with encode to Base64 
 ```
 
 ## API ##
@@ -51,10 +51,10 @@ Authorization: Bearer {{acctoken}}
 }
 
 {
-"email": "Kylie.Rey@exaple.com",
+"expiration": 86400000,
 "roles":USER,
-"access_token": "eyJhbGciOiJ9.iIxMjM0NTY3ODkwIiwibmFt.JV_adQssw5c",
-"refresh_token":"eyJhbGciOiJ9.iIxMjM0NTY3ODkwIiwibmFt.5MDIssw5c",
+"access_token": "eyJhbGciOiJ9.iIxMjM0NT....Y3ODkwIiwibmFt.JV_adQssw5c..",
+"refresh_token":"eyJhbGciOiJ9.iIxMjM0NT....Y3ODkwIiwibmFt.5MDIssw5c..",
 }
 
 
