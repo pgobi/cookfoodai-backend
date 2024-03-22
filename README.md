@@ -1,7 +1,7 @@
 # CookFoodAI #
 
 ### About ###
-The use of AI in e-commerce in a food store
+The use of artificial-intelligence (AI) in e-commerce in a food store
 
 ** IN PROGRESS  **
 
@@ -20,18 +20,21 @@ Start project: 01.03.2024
 - [OpenAPI Swagger]
 - [JWT]
 - [Mockito 5.x] & [jUnit  5] TO DO
-- [Spring AI] TO DO [https://docs.spring.io/spring-ai/reference/index.html]() 
+- [Spring AI]  TO DO [https://docs.spring.io/spring-ai/reference/index.html]() 
 
-## Configuration for Application
+##  OpenAI
+Pricing - OpenAI, [https://openai.com/pricing?ref=muneebkhawaja.com]()
 
-A sample configuration for an `application.properties` file to run this program is:
+For OpenAI's API. Go to [https://openai.com/](), sign up for an account, and generate an API key.
 
 ** properties :** [./src/main/resources/application.properties]()
 
-```properties
+``` 
 # OpenAI key
-openai.api.key=your open_AI key
+spring.ai.openai.api-key=your open_AI key
+```
 
+```
 # Security JWT Token key  # Encode to Base64  (HS256)
 security.jwt.secret.key=your security key with encode to Base64 
 ```
