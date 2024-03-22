@@ -6,18 +6,18 @@ import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 @Entity
-@DynamicInsert
-@DynamicUpdate
 @Table(name = "users")
 public class User  implements UserDetails {
 
@@ -39,12 +39,7 @@ public class User  implements UserDetails {
     private String password;
 
     @Column(name = "role")
-    private Role role;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role.getAuthorities();
-    }
+    private String role;
 
     @Override
     public String getPassword() {
@@ -55,7 +50,11 @@ public class User  implements UserDetails {
     public String getUsername() {
         return email;
     }
+    @Override
 
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
+    }
     @Override
     public boolean isAccountNonExpired() {
         return true;

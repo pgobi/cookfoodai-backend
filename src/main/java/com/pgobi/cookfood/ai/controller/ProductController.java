@@ -21,7 +21,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/product")
 @RequiredArgsConstructor
-@PreAuthorize("hasRole('ROLE_USER')")
 public class ProductController {
 
     private final ProductService productService;
@@ -85,16 +84,5 @@ public class ProductController {
         }
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-/*
-    @GetMapping("/{id}")
-    public ResponseEntity<ProductResponse> getById(Integer id) {
-        try {
-            return productService.getById(id);
-        } catch (Exception exception){
-            exception.printStackTrace();
-        }
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApplicationConstants.UNEXPECTED_ERROR);
-    }
-*/
 }
 

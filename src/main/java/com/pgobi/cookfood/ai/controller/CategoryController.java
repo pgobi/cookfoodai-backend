@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,11 +35,10 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApplicationConstants.UNEXPECTED_ERROR);
     }
 
-
-    @GetMapping("/get")
-    public ResponseEntity<List<Category>> getCategories(String filterValue) {
+    @GetMapping("/get/all")
+    public ResponseEntity<List<Category>> getCategories( ) {
         try {
-            return categoryService.getCategories(filterValue);
+            return categoryService.getCategories();
         } catch (Exception exception){
             exception.printStackTrace();
         }

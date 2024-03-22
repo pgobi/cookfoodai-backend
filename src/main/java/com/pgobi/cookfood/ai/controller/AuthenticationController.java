@@ -2,7 +2,7 @@ package com.pgobi.cookfood.ai.controller;
 
 import com.pgobi.cookfood.ai.model.AuthenticationRequest;
 import com.pgobi.cookfood.ai.model.TokenRequest;
-import com.pgobi.cookfood.ai.model.RegisterRequest;
+import com.pgobi.cookfood.ai.model.SignUpRequest;
 import com.pgobi.cookfood.ai.model.AuthenticationResponse;
 import com.pgobi.cookfood.ai.model.TokenResponse;
 import com.pgobi.cookfood.ai.service.AuthenticationService;
@@ -34,10 +34,11 @@ public class AuthenticationController {
     private final TokenService tokenService;
     private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@Valid @RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authenticationService.register(request));
+    @PostMapping("/registration")
+    public ResponseEntity<AuthenticationResponse> signUp(@Valid @RequestBody SignUpRequest request) {
+        return ResponseEntity.ok(authenticationService.signUp(request));
     }
+
 
     @PostMapping("/login")
     @Operation(
@@ -53,8 +54,8 @@ public class AuthenticationController {
                     )
             }
     )
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest request) {
-        return ResponseEntity.ok(authenticationService.login(request));
+    public ResponseEntity<AuthenticationResponse> signIn(@RequestBody AuthenticationRequest request) {
+        return ResponseEntity.ok(authenticationService.signIn(request));
     }
 
     @PostMapping("/refresh-token")
@@ -62,13 +63,6 @@ public class AuthenticationController {
         return ResponseEntity.ok(tokenService.refreshToken(request));
     }
 
-    /*
-    @GetMapping("/me")
-    public Authentication getAuthentication(@RequestBody AuthenticationRequest request){
-        return authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword()));
-    }
-    */
 
     @GetMapping("/me")
     public Authentication getAuthentication(@RequestParam String email, @RequestParam String password){
@@ -76,9 +70,10 @@ public class AuthenticationController {
                 new UsernamePasswordAuthenticationToken(email, password));
     }
 
+
     @PostMapping("/logout")
-    public ResponseEntity<AuthenticationResponse> logout(@RequestBody AuthenticationRequest request) {
-        return ResponseEntity.ok(authenticationService.logout(request));
+    public ResponseEntity<AuthenticationResponse> signOut(@RequestBody AuthenticationRequest request) {
+        return ResponseEntity.ok(authenticationService.signOut(request));
     }
 
 }

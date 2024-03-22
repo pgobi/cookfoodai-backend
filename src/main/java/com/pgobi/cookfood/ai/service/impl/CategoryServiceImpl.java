@@ -37,9 +37,8 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public ResponseEntity<List<Category>> getCategories(String filterValue) {
+    public ResponseEntity<List<Category>> getCategories( ) {
         try {
-            if(!Strings.isNullOrEmpty(filterValue) && filterValue.equalsIgnoreCase("true"))
             return new ResponseEntity<>(categoryRepository.findAll(), HttpStatus.OK);
         } catch (Exception exception){
             exception.printStackTrace();

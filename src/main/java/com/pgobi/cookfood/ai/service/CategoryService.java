@@ -10,6 +10,6 @@ import java.util.Map;
 @Service
 public interface CategoryService {
     ResponseEntity<String> addCategory(Map<String, String> requestMap);
-    ResponseEntity<List<Category>> getCategories(String filterValue);
+    ResponseEntity<List<Category>> getCategories();
     ResponseEntity<String> updateCategory(Map<String, String> requestMap);
 }

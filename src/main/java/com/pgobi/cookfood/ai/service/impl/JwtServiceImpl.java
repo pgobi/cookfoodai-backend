@@ -32,8 +32,6 @@ public class JwtServiceImpl implements JwtService {
         return extractClaim(accessToken, Claims::getSubject);
     }
 
-
-
     @Override
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String userName = extractEmail(token);
@@ -65,11 +63,18 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build().parseClaimsJws(token)
-                .getBody();
+        Claims claims = null;
+        try {
+            claims = Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build().parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            System.out.print("Filter extractAllClaims:" + token);
+        }
+        return claims;
     }
+
 
     private Key getSigningKey() {
         byte[] keyBytes = Base64.getDecoder().decode(jwtSigningKey);

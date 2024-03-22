@@ -22,7 +22,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
-    private void insertOrder(Map<String, Object> requestMap) {
+    private void addOrder(Map<String, Object> requestMap) {
         try {
             Order order = new Order();
             order.setName((String) requestMap.get("name"));
