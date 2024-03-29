@@ -1,6 +1,6 @@
 package com.pgobi.cookfood.ai.entities;
 
-import com.pgobi.cookfood.ai.enums.RecipeCategory;
+import com.pgobi.cookfood.ai.enums.Category;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "recipes")
-public class Recipe implements Serializable {
+public class Receipt implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,20 +21,17 @@ public class Recipe implements Serializable {
     private Integer recipeId;
 
     @Column(name = "recipe_name")
-    private String recipeName;
+    private String name;
 
     @Enumerated
-    @Column(name = "recipe_category")
-    private RecipeCategory recipeCategory;
+    @Column(name = "meal_category")
+    private Category category;
 
-    @Column(name = "instructions")
-    private String instructions;
+    @Column(name = "preparation")
+    private String preparation;
 
-    @Column(name = "description")
-    private String description;
-
-    @Column(name = "number_people")
-    private String numberPeople;
+    @Column(name = "people")
+    private String people;
 
     @Column(name = "date_created")
     @CreationTimestamp

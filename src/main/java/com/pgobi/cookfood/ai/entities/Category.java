@@ -25,7 +25,7 @@ public class Category implements Serializable {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "category_name")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "date_created")

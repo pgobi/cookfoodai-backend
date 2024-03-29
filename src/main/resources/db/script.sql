@@ -31,13 +31,13 @@ CREATE TABLE token (
 
 CREATE TABLE category (
                           id INT PRIMARY KEY AUTO_INCREMENT,
-                          category_name VARCHAR(255)
+                          name VARCHAR(255)
 );
 
 CREATE TABLE  orders (
                          id INT PRIMARY KEY AUTO_INCREMENT,
                          uuid VARCHAR(255),
-                         order_name VARCHAR(255),
+                         name VARCHAR(255),
                          email VARCHAR(255),
                          payment_method VARCHAR(255),
                          total_price DECIMAL(10, 2),
@@ -47,7 +47,7 @@ CREATE TABLE  orders (
 
 CREATE TABLE products (
                           uuid INT PRIMARY KEY AUTO_INCREMENT,
-                          product_name VARCHAR(255),
+                          name VARCHAR(255),
                           category_id INT,
                           description TEXT,
                           price DECIMAL(10, 2),
@@ -57,11 +57,11 @@ CREATE TABLE products (
 
 CREATE TABLE recipes (
                          id INT PRIMARY KEY AUTO_INCREMENT,
-                         recipe_name VARCHAR(255),
-                         recipe_category SMALLINT,
-                         instructions LONGTEXT,
-                         description LONGTEXT,
-                         number_people INTEGER,
+                         name VARCHAR(255),
+                         ingredients VARCHAR(255),
+                         category VARCHAR(20),
+                         preparation LONGTEXT,
+                         people INTEGER,
                          date_created DATETIME
 );
 
@@ -74,9 +74,9 @@ CREATE TABLE carts (
                        total_cost DECIMAL(10, 2)
 );
 
-INSERT INTO category (category_name) VALUES ('vegetables'), ('sauces'), ('meat');
+INSERT INTO category (name) VALUES ('vegetables'),('sauces'),('meat');
 
-INSERT INTO products (product_name, category_id, description,price, status)
+INSERT INTO products (name, category_id, description,price, status)
 VALUES ('Egg', 1, 'Description 1', 50.00, 'true'), ('Mayonnaise', 2, 'Description 2', 75.00, 'true');
 
 INSERT INTO users  (first_name,last_name, email, password, status, role, date_created, last_updated)
@@ -91,18 +91,18 @@ VALUES ('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIiwiaWF0IjoxNzEwNz
 
 INSERT INTO token (access_token, expired, revoked, user_id)
 VALUES ('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlhdCI6MTcxMDc2OTcxOSwiZXhwIjoxNzEwODU2MTE5fQ.zpNwlj9f67w-h-JTSsFLpm8zfgVLZ2A_AKksXnMelQs',
-        false, false, 1);
+        false, false, 2);
 
-INSERT INTO orders (uuid, order_name, email, payment_method, total_price, product_detail, date_created)
+INSERT INTO orders (uuid, name, email, payment_method, total_price, product_detail, date_created)
 VALUES ('345632323', 'Order 1', 'user@example.com', 'Credit Card', 100.00, '{"product_id": 1}','2024-03-11 14:30:00');
 
-INSERT INTO orders (uuid, order_name, email, payment_method, total_price, product_detail, date_created)
+INSERT INTO orders (uuid, name, email, payment_method, total_price, product_detail, date_created)
 VALUES ('4535476888', 'Order 2', 'test2@example.com', 'PayPal', 50.00, '{"product_id": 2}','2024-03-11 14:30:00');
 
-INSERT INTO recipes (recipe_name, recipe_category, instructions, date_created)
+INSERT INTO recipes (name, category, preparation, date_created)
 VALUES ('Cake', 2, 'Step 1: Mix the ingredients. Step 2: Bake in the oven', '2024-03-11 14:30:00');
 
-INSERT INTO recipes (recipe_name, recipe_category, instructions, date_created)
+INSERT INTO recipes (name, category, preparation, date_created)
 VALUES ('Tomato soup', 1, 'Step 1: Cut the tomatoes. Step 2: Cook with spices.', '2024-03-11 18:45:00');
 
 INSERT INTO carts (id, date_created, status, total_cost, quantity, product_id)

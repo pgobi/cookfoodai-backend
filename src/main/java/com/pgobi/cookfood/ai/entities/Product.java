@@ -23,7 +23,7 @@ public class Product implements Serializable {
     @Column(name = "uuid")
     private Integer id;
 
-    @Column(name = "product_name")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "category_id")

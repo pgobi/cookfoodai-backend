@@ -27,7 +27,7 @@ public class Order implements Serializable {
     @Column(name = "uuid")
     private String uuid;
 
-    @Column(name = "order_name")
+    @Column(name = "name")
     private String name;
 
     @Column(name = "email")

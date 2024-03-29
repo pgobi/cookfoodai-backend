@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,10 +24,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.Arrays;
 
@@ -49,6 +52,11 @@ public class SecurityConfig {
     private static final String API_RESOURCE = "/api/**";
 
 
+    @Bean
+    @Primary
+    public HandlerMappingIntrospector handlerMappingIntrospector() {
+        return new HandlerMappingIntrospector();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -70,25 +78,30 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http.csrf(AbstractHttpConfigurer::disable)
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, HandlerMappingIntrospector introspector) throws Exception {
+        MvcRequestMatcher.Builder mvc = new MvcRequestMatcher.Builder(introspector);
+        httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .securityMatcher(API_RESOURCE)
-                .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers(new AntPathRequestMatcher("/api/authentication/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/api/product/**")).hasAnyRole(Role.USER.name(),Role.ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/users/**")).hasAnyRole(Role.USER.name(),Role.ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/category/**")).hasAnyRole(Role.USER.name(),Role.ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/order/**")).hasAnyRole(Role.USER.name(),Role.ADMIN.name())
-                        .requestMatchers(new AntPathRequestMatcher("/api/recipe/**")).hasAnyRole(Role.USER.name(),Role.ADMIN.name())
+                .authorizeHttpRequests((security) -> security
+                        .requestMatchers(
+                                mvc.pattern("/api/authentication/**"),
+                                mvc.pattern("/swagger-ui/**"),
+                                mvc.pattern("/h2-console/**")
+                        ).permitAll()
+                        .requestMatchers(
+                                mvc.pattern("/api/product/**"),
+                                mvc.pattern("/api/users/**"),
+                                mvc.pattern("/api/category/**"),
+                                mvc.pattern("/api/order/**"),
+                                mvc.pattern("/api/recipe/**")
+                        ).hasAnyRole(Role.USER.name(), Role.ADMIN.name())
                         .anyRequest()
                         .authenticated())
                 .authenticationProvider(authenticationProvider())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(jwtAuthenticationEntryPoint))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        return httpSecurity.build();
     }
 
     @Bean
@@ -112,7 +125,5 @@ public class SecurityConfig {
         bean.setOrder(CORS_FILTER_ORDER);
         return bean;
     }
-
-
 
 }

@@ -1,5 +1,5 @@
 package com.pgobi.cookfood.ai.enums;
 
-public enum RecipeCategory {
+public enum Category {
     BREAKFAST, LUNCH, DINNER;
 }
