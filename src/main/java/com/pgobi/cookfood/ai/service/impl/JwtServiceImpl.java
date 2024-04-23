@@ -45,6 +45,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+        System.out.println(userDetails.getUsername());
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
@@ -70,7 +71,7 @@ public class JwtServiceImpl implements JwtService {
                     .build().parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
-            System.out.print("Filter extractAllClaims:" + token);
+            System.out.print("[JwtServiceImpl] extractAllClaims:" + token);
         }
         return claims;
     }

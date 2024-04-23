@@ -19,6 +19,15 @@ public interface TokenRepository extends JpaRepository<Token, Integer> {
       """)
     List<Token> findAllValidTokenByUser(Integer userId);
 
+    @Query(value = """
+      select u from Token t inner join User u\s
+      on t.user.id = u.id\s
+      where t.accessToken = :accessToken and (t.expired = false or t.revoked = false)\s
+      """)
+    Optional<User> findUserByAccessToken(String accessToken);
+
+    Token findByUserId(int userId);
+
     Optional<Token> findByRefreshToken(String refreshToken);
 
     Optional<Token> findByAccessToken(String accessToken);

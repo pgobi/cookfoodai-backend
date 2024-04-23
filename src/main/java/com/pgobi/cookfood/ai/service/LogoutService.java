@@ -1,5 +1,6 @@
 package com.pgobi.cookfood.ai.service;
 
+import com.pgobi.cookfood.ai.constants.ApplicationConstants;
 import com.pgobi.cookfood.ai.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,9 +22,9 @@ public class LogoutService implements LogoutHandler {
             HttpServletResponse response,
             Authentication authentication
     ) {
-        final String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader(ApplicationConstants.AUTHORIZATION_HEADER);
         final String accessToken;
-        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
+        if (authHeader == null ||!authHeader.startsWith(ApplicationConstants.AUTHORIZATION_BEARER +" ")) {
             return;
         }
         accessToken = authHeader.substring(7);

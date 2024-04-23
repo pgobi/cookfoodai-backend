@@ -55,9 +55,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         refreshTokenClaims.put("tokenType", "refresh");
 
         var accessToken = jwtService.generateToken(accessTokenClaims, user);
+
         var refreshToken = jwtService.generateToken(refreshTokenClaims, user);
 
-        saveUserToken(savedUser,accessToken, refreshToken);
+        saveToken(savedUser,accessToken, refreshToken);
 
         return AuthenticationResponse.builder()
                 .accessToken(accessToken)
@@ -97,11 +98,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         var refreshTokenClaims = new HashMap<String, Object>();
         refreshTokenClaims.put("tokenType", "refresh");
 
+        System.out.print("[AuthenticationServiceImpl] getEmail: " +user.getEmail() );
+
         var accessToken = jwtService.generateToken(accessTokenClaims, user);
         var refreshToken = jwtService.generateToken(refreshTokenClaims, user);
 
         revokeAllUserTokens(user);
-        saveUserToken(user, accessToken, refreshToken);
+        saveToken(user, accessToken, refreshToken);
         return AuthenticationResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -110,16 +113,29 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
     }
 
-    private void saveUserToken(User user, String accessToken , String refreshToken) {
-        var token = Token.builder()
-                .user(user)
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .expired(false)
-                .revoked(false)
-                .build();
-        tokenRepository.save(token);
+    private void saveToken(User user, String accessToken, String refreshToken) {
+
+        Token existingToken = tokenRepository.findByUserId(user.getId());
+
+        if (existingToken != null) {
+            existingToken.setAccessToken(accessToken);
+            existingToken.setRefreshToken(refreshToken);
+            existingToken.setExpired(false);
+            existingToken.setRevoked(false);
+            tokenRepository.save(existingToken);
+        } else {
+            Token newToken = Token.builder()
+                    .user(user)
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
+                    .expired(false)
+                    .revoked(false)
+                    .build();
+            tokenRepository.save(newToken);
+        }
     }
+
+
 
     private void revokeAllUserTokens(User user) {
         var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());

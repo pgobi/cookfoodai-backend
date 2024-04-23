@@ -7,10 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +30,8 @@ public class OrderController {
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @PostMapping("delete/{id}")
-    public ResponseEntity<String> deleteOrder(Integer id) {
+    @PostMapping("delete/")
+    public ResponseEntity<String> deleteOrder(@RequestParam("id") Integer id) {
         try {
             return orderService.deleteOrder(id);
         } catch (Exception exception){

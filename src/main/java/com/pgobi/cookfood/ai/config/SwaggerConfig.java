@@ -16,10 +16,10 @@ public class SwaggerConfig {
     public OpenAPI openApiConfig() {
         return new OpenAPI().info(apiInfo())
                 .addSecurityItem(
-                        new SecurityRequirement().addList(ApplicationConstants.AUTHORIZATION_BEARER)).components(
-                        new Components().addSecuritySchemes(ApplicationConstants.AUTHORIZATION_BEARER,
-                                new SecurityScheme()
-                                        .name(ApplicationConstants.AUTHORIZATION_BEARER)
+
+                        new SecurityRequirement().addList(ApplicationConstants.SECURITY_SCHEME))
+                        .components(new Components()
+                                .addSecuritySchemes(ApplicationConstants.SECURITY_SCHEME, new SecurityScheme()
                                         .type(SecurityScheme.Type.HTTP)
                                         .bearerFormat("JWT")
                                         .scheme("bearer")));

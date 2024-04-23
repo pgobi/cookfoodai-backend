@@ -1,10 +1,12 @@
 package com.pgobi.cookfood.ai.service.impl;
 
+import com.pgobi.cookfood.ai.constants.ApplicationConstants;
 import com.pgobi.cookfood.ai.entities.Token;
 import com.pgobi.cookfood.ai.entities.User;
 import com.pgobi.cookfood.ai.exceptions.TokenException;
 import com.pgobi.cookfood.ai.model.TokenRequest;
 import com.pgobi.cookfood.ai.model.TokenResponse;
+import com.pgobi.cookfood.ai.model.UserResponse;
 import com.pgobi.cookfood.ai.repository.TokenRepository;
 import com.pgobi.cookfood.ai.service.JwtService;
 import com.pgobi.cookfood.ai.service.TokenService;
@@ -13,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -52,34 +55,27 @@ public class TokenServiceImpl implements TokenService {
                 .build();
     }
 
-    /*
-     public void refreshToken(
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) throws IOException {
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        final String refreshToken;
-        final String userEmail;
-        if (authHeader == null ||!authHeader.startsWith("Bearer ")) {
-            return;
-        }
-        refreshToken = authHeader.substring(7);
-        userEmail = jwtService.extractEmail(refreshToken);
-        if (userEmail != null) {
-            var user = this.userRepository.findByEmail(userEmail)
-                    .orElseThrow();
-            if (jwtService.isTokenValid(refreshToken, user)) {
-                var accessToken = jwtService.generateToken(user);
-                revokeAllUserTokens(user);
-                saveUserToken(user, accessToken,refreshToken);
-                var authResponse = AuthenticationResponse.builder()
-                        .accessToken(accessToken)
-                        .refreshToken(refreshToken)
-                        .build();
-                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+    @Override
+    public UserResponse getUserInfo(String authorizationHeader) {
+
+            if (authorizationHeader == null && !authorizationHeader.startsWith(ApplicationConstants.AUTHORIZATION_BEARER + " ")) {
+                throw new TokenException(authorizationHeader.substring(7), "Access token does not exist");
             }
-        }
+
+            String token = authorizationHeader.substring(7);
+
+            System.out.print("getUserInfo : " + token);
+
+            User user = tokenRepository.findUserByAccessToken(token)
+                    .orElseThrow(() -> new TokenException(token, "Access token does not exist"));
+
+            System.out.print("getUserInfo:"+ user.getFirstName() +"/n" +user.getRole()+"/n");
+
+            return UserResponse.builder()
+                    .firstName(user.getFirstName())
+                    .lastName(user.getLastName())
+                    .role(user.getRole())
+                    .build();
     }
-     */
 
 }

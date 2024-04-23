@@ -3,6 +3,7 @@ package com.pgobi.cookfood.ai.constants;
 public class ApplicationConstants {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
+    public static final String SECURITY_SCHEME = "bearer-auth";
     public static final String AUTHORIZATION_BEARER = "Bearar";
     public static final String INVALID_DATA = "Invalid Data.";
     public static final String CATEGORY_UPDATE_SUCCESS = "Category updated Id:";
@@ -16,6 +17,5 @@ public class ApplicationConstants {
     public static final String ORDER_DELETE_SUCCESS = "Order deleted Id:";
     public static final String UNEXPECTED_ERROR = "Unexpected error";
     public static final String SOMETHING_WRONG = "Something went wrong.";
-
 
 }

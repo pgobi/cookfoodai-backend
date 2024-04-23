@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +52,8 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApplicationConstants.UNEXPECTED_ERROR);
     }
 
-    @PostMapping("/delete/{id}")
-    public ResponseEntity<String> deleteProduct(Integer id) {
+    @PostMapping("/delete/")
+    public ResponseEntity<String> deleteProduct(@RequestParam("id") Integer id) {
         try {
             return productService.deleteProduct(id);
         } catch (Exception exception){
@@ -75,8 +72,8 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApplicationConstants.UNEXPECTED_ERROR);
     }
 
-    @GetMapping("/category/{id}")
-    public ResponseEntity<List<Product>> getByCategory(Integer id) {
+    @GetMapping("/category/")
+    public ResponseEntity<List<Product>> getByCategory(@RequestParam("id") Integer id) {
         try {
             return productService.getByCategory(id);
         } catch (Exception exception){

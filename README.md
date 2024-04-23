@@ -42,15 +42,41 @@ security.jwt.secret.key=your security key with encode to Base64
 ## API ##
 [Swagger UI]  [http://localhost:5000/swagger-ui/index.html]()
 
-#### Registration  ####
-[Request POST: ]
+### Login  ###
+
+
+[Request POST: api/recipe/login]
+```
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlhdCI6MTcxMzUzMTU2OCwiZXhwIjoxNzEzNjE3OTY4fQ.ELBp5nMwpdSdyXl14yNMO5ZXKaVSWEkuiuqnBVninlc
+```
+```
+Body:
+`{
+"email": "user@example.com",
+"password": "12345"
+}`
+```
+or
+```
+Authorization: Bearer  eyJhbGciOiJIUzI1NiJ9.eyJ0b2tlblR5cGUiOiJhY2Nlc3MiLCJzdWIiOiJhZG1pbkBleGFtcGxlLmNvbSIsImlhdCI6MTcxMzUzMTM3MywiZXhwIjoxNzEzNjE3NzczfQ.3uQEphtnK1ewWbdoswGyB-woYR15Pr-wkYg2atFRym8
+```
+```
+Body:
+{
+"email": "admin@example.com",
+"password": "12345"
+}
+```
+
+### Registration  ###
+[Request POST: api/recipe/login]
 
 Authorization: Bearer {{acctoken}}
 ```
 {
 "firstname": "Kylie",
 "lastname": "Rey",
-"email": "Kylie.Rey@exaple.com",
+"email": "Kylie.Rey@example.com",
 "password": "#34pc3RyYXRvciJdfQ.f"
 }
 ```
@@ -62,7 +88,7 @@ Authorization: Bearer {{acctoken}}
 "refresh_token":"eyJhbGciOiJ9.iIxMjM0NT....Y3ODkwIiwibmFt.5MDIssw5c..",
 }
 ```
-#### Receipts AI ####
+### Receipts AI ###
 [Request GET: api/recipe/getAI?category=lunch&people=2 ]
 
 Authorization: Bearer {{acctoken}}
